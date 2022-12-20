@@ -16,19 +16,19 @@ export const Text = styled.p`
 export const BtnIcon = styled.button`
   width: 20px;
   height: 20px;
-  margin: 0;
-  padding: 0;
+  margin: ${p => p.theme.space[0]}px;
+  padding: ${p => p.theme.space[0]}px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
+  border: ${p => p.theme.borders.none};
   background-color: inherit;
   cursor: pointer;
   transition: transform 250ms ease-in-out;
 
   :hover svg,
   :focus svg {
-    fill: #5856d6;
+    fill: ${p => p.theme.colors.fill};
     transform: scale3d(1.2, 1.2, 1.2);
   }
 `;
