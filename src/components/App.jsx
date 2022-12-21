@@ -9,6 +9,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { Box } from 'common/Box';
 import { Title, TitleSection } from './App.styled';
+import * as storage from 'services/localStorage';
+
+const STORAGE_CONTACTS_KEY = 'phonebook-contacts';
 
 const INITIAL_CONTACTS = [
   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
@@ -22,6 +25,24 @@ export class App extends PureComponent {
     contacts: [...INITIAL_CONTACTS],
     filter: '',
   };
+
+  componentDidMount() {
+    const savedContacts = storage.get(STORAGE_CONTACTS_KEY);
+
+    if (savedContacts) {
+      this.setState({
+        contacts: savedContacts,
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { contacts } = this.state;
+
+    if (prevState.contacts !== contacts) {
+      storage.save(STORAGE_CONTACTS_KEY, contacts);
+    }
+  }
 
   onAddContact = contact => {
     if (this.state.contacts.some(item => item.name === contact.name)) {
@@ -62,6 +83,8 @@ export class App extends PureComponent {
     });
   };
 
+  clearFilter = () => this.setState({ filter: '' });
+
   filteredContacts = contacts => {
     const { filter } = this.state;
     const normalizedFilter = filter.toLowerCase();
@@ -80,9 +103,13 @@ export class App extends PureComponent {
         <FormContact onSubmit={this.onAddContact} />
 
         <TitleSection>Contacts</TitleSection>
-        {filteredData.length === 0 && <p>Add contact on your contacts list</p>}
-        {contacts.length > 2 && (
-          <Filter value={filter} onChange={this.fitletedChangeState} />
+        {contacts.length === 0 && <p>Add contact on your contacts list</p>}
+        {contacts.length > 1 && (
+          <Filter
+            value={filter}
+            onChange={this.fitletedChangeState}
+            clearFilter={this.clearFilter}
+          />
         )}
         {filteredData.length > 0 && (
           <ContactsList

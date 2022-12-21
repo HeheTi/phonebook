@@ -1,15 +1,22 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { FilterInput } from './Filter.styled';
 
-const Filter = props => {
-  const { value, onChange } = props;
-  return <FilterInput type="text" value={value} onChange={onChange} />;
-};
+export class Filter extends Component {
+  static propTypes = {
+    value: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    clearFilter: PropTypes.func.isRequired,
+  };
 
-Filter.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-};
+  componentWillUnmount() {
+    this.props.clearFilter();
+  }
+
+  render() {
+    const { value, onChange } = this.props;
+    return <FilterInput type="text" value={value} onChange={onChange} />;
+  }
+}
 
 export default Filter;

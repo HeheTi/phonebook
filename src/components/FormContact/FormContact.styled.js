@@ -22,6 +22,11 @@ export const ButtonSubmit = styled.button`
   transition: transform 250ms ease-in-out;
   padding: ${p => p.theme.space[1]}px;
 
+  :hover:disabled,
+  :focus:disabled {
+    cursor: no-drop;
+  }
+
   :hover:not(:disabled),
   :focus:not(:disabled) {
     transform: scale3d(1.1, 1.1, 1.1);
