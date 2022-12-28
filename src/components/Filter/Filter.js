@@ -1,22 +1,21 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 import { FilterInput } from './Filter.styled';
 
-export class Filter extends Component {
-  static propTypes = {
-    value: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    clearFilter: PropTypes.func.isRequired,
-  };
+const Filter = ({ value, onChange }) => (
+  <FilterInput
+    type="text"
+    pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+    title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+    required
+    value={value}
+    onChange={onChange}
+  />
+);
 
-  componentWillUnmount() {
-    this.props.clearFilter();
-  }
-
-  render() {
-    const { value, onChange } = this.props;
-    return <FilterInput type="text" value={value} onChange={onChange} />;
-  }
-}
+Filter.prototype = {
+  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  clearFilter: PropTypes.func.isRequired,
+};
 
 export default Filter;

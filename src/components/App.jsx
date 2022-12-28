@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import { useState, useEffect } from 'react';
 import FormContact from './FormContact';
 import { nanoid } from 'nanoid';
 import ContactsList from './ContactsList';
@@ -20,32 +20,23 @@ const INITIAL_CONTACTS = [
   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
 ];
 
-export class App extends PureComponent {
-  state = {
-    contacts: [...INITIAL_CONTACTS],
-    filter: '',
-  };
+const App = () => {
+  const [contacts, setContacts] = useState(
+    () => storage.get(STORAGE_CONTACTS_KEY) || [...INITIAL_CONTACTS]
+  );
 
-  componentDidMount() {
-    const savedContacts = storage.get(STORAGE_CONTACTS_KEY);
+  const [filter, setFilter] = useState('');
 
-    if (savedContacts) {
-      this.setState({
-        contacts: savedContacts,
-      });
-    }
-  }
+  useEffect(() => {
+    if (!contacts.length) return;
+    storage.save(STORAGE_CONTACTS_KEY, contacts);
+  }, [contacts]);
 
-  componentDidUpdate(prevProps, prevState) {
-    const { contacts } = this.state;
+  const isHaveName = contact =>
+    contacts.some(item => item.name === contact.name);
 
-    if (prevState.contacts !== contacts) {
-      storage.save(STORAGE_CONTACTS_KEY, contacts);
-    }
-  }
-
-  onAddContact = contact => {
-    if (this.state.contacts.some(item => item.name === contact.name)) {
+  const onAddContact = contact => {
+    if (isHaveName(contact)) {
       toast.error(`${contact.name} is already in contacts`, {
         position: 'top-right',
         autoClose: 2500,
@@ -64,64 +55,45 @@ export class App extends PureComponent {
       id: nanoid(),
     };
 
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts, prepeadContact],
-    }));
+    setContacts(state => [...state, prepeadContact]);
   };
 
-  deleteContact = id => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(item => item.id !== id),
-    }));
+  const deleteContact = id => {
+    setContacts(state => state.filter(item => item.id !== id));
   };
 
-  fitletedChangeState = e => {
-    const filterData = e.target.value;
+  const fitletedChangeState = e => setFilter(e.target.value);
 
-    this.setState({
-      filter: filterData,
-    });
-  };
-
-  clearFilter = () => this.setState({ filter: '' });
-
-  filteredContacts = contacts => {
-    const { filter } = this.state;
+  const filteredContacts = contacts => {
     const normalizedFilter = filter.toLowerCase();
     return contacts.filter(({ name }) =>
       name.toLowerCase().includes(normalizedFilter)
     );
   };
 
-  render() {
-    const { contacts, filter } = this.state;
-    const filteredData = this.filteredContacts(contacts);
+  const filteredData = filteredContacts(contacts);
 
-    return (
-      <Box ml="auto" mr="auto" width="400px" p="15px">
-        <Title>Phonebook</Title>
-        <FormContact onSubmit={this.onAddContact} />
+  return (
+    <Box ml="auto" mr="auto" width="400px" p="15px">
+      <Title>Phonebook</Title>
+      <FormContact onSubmit={onAddContact} />
 
-        <TitleSection>Contacts</TitleSection>
-        {contacts.length === 0 && <p>Add contact on your contacts list</p>}
-        {contacts.length > 1 && (
-          <Filter
-            value={filter}
-            onChange={this.fitletedChangeState}
-            clearFilter={this.clearFilter}
-          />
-        )}
-        {filteredData.length > 0 && (
-          <ContactsList
-            contacts={filteredData}
-            delContact={this.deleteContact}
-          />
-        )}
+      <TitleSection>Contacts</TitleSection>
+      {contacts.length === 0 && <p>Add contact on your contacts list</p>}
+      {contacts.length > 1 && (
+        <Filter
+          value={filter}
+          onChange={fitletedChangeState}
+          clearFilter={() => setFilter('')}
+        />
+      )}
+      {filteredData.length > 0 && (
+        <ContactsList contacts={filteredData} delContact={deleteContact} />
+      )}
 
-        <ToastContainer />
-      </Box>
-    );
-  }
-}
+      <ToastContainer />
+    </Box>
+  );
+};
 
 export default App;

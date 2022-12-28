@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { Item, Text, BtnIcon } from './ListItem.styled';
 import { HiTrash } from 'react-icons/hi2';
