@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Box } from 'common/Box';
 import { Title, TitleSection } from './App.styled';
 import * as storage from 'services/localStorage';
+import { normalizeName } from 'services/normalized';
 
 const STORAGE_CONTACTS_KEY = 'phonebook-contacts';
 
@@ -37,7 +38,7 @@ const App = () => {
 
   const onAddContact = contact => {
     if (isHaveName(contact)) {
-      toast.error(`${contact.name} is already in contacts`, {
+      toast.error(`${normalizeName(contact.name)} is already in contacts`, {
         position: 'top-right',
         autoClose: 2500,
         hideProgressBar: false,
