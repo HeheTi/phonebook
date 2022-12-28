@@ -12,7 +12,7 @@ const Filter = ({ value, onChange }) => (
   />
 );
 
-Filter.prototype = {
+Filter.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   clearFilter: PropTypes.func.isRequired,

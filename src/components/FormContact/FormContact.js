@@ -76,8 +76,6 @@ const FormContact = ({ onSubmit }) => {
   );
 };
 
-FormContact.prototype = {
+FormContact.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
-
-export default FormContact;
