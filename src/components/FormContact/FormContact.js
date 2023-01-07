@@ -1,11 +1,18 @@
-import PropTypes from 'prop-types';
 import { useState, useRef } from 'react';
 import { nanoid } from 'nanoid';
 import { Box } from './../../common/Box';
 import { Input, LabelInput, ButtonSubmit } from './FormContact.styled';
 import { theme } from 'common/theme';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectContacts } from 'redux/selectors';
+import { toast } from 'react-toastify';
+import { normalizeName } from 'services/normalized';
+import { addContact } from 'redux/actions';
 
-const FormContact = ({ onSubmit }) => {
+const FormContact = () => {
+  const contacts = useSelector(selectContacts);
+  const dispatch = useDispatch();
+
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -14,6 +21,8 @@ const FormContact = ({ onSubmit }) => {
 
   const handleChangeName = e => setName(e.target.value);
   const handleChangeNumber = e => setNumber(e.target.value);
+
+  const isHaveName = name => contacts.some(item => item.name === name);
 
   const handleSubmitFormContact = e => {
     e.preventDefault();
@@ -25,7 +34,27 @@ const FormContact = ({ onSubmit }) => {
       return;
     }
 
-    onSubmit({ name: trimName, number: trimNumber });
+    if (isHaveName(trimName)) {
+      toast.error(`${normalizeName(trimName)} is already in contacts`, {
+        position: 'top-right',
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+      return;
+    }
+
+    const prepeadContact = {
+      name: trimName,
+      number: trimNumber,
+      id: nanoid(),
+    };
+
+    dispatch(addContact(prepeadContact));
     resetForm();
   };
 
@@ -74,10 +103,6 @@ const FormContact = ({ onSubmit }) => {
       </ButtonSubmit>
     </Box>
   );
-};
-
-FormContact.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };
 
 export default FormContact;
