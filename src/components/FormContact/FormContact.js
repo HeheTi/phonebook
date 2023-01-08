@@ -1,11 +1,33 @@
-import PropTypes from 'prop-types';
 import { useState, useRef } from 'react';
 import { nanoid } from 'nanoid';
 import { Box } from './../../common/Box';
 import { Input, LabelInput, ButtonSubmit } from './FormContact.styled';
 import { theme } from 'common/theme';
+import { toast } from 'react-toastify';
+import { normalizeName } from 'services/normalized';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contacts/contactsSlice';
+import { selectItemsContacts } from 'redux/selectors';
 
-const FormContact = ({ onSubmit }) => {
+const isHaveName = (nameContact, items) =>
+  items.some(item => item.name === nameContact);
+
+const alertDontHaveName = name =>
+  toast.error(`${normalizeName(name)} is already in contacts`, {
+    position: 'top-right',
+    autoClose: 2500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: 'light',
+  });
+
+const FormContact = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectItemsContacts);
+
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -15,9 +37,7 @@ const FormContact = ({ onSubmit }) => {
   const handleChangeName = e => setName(e.target.value);
   const handleChangeNumber = e => setNumber(e.target.value);
 
-  const handleSubmitFormContact = e => {
-    e.preventDefault();
-
+  const addContactData = () => {
     const trimName = name.trim();
     const trimNumber = number.trim();
 
@@ -25,13 +45,23 @@ const FormContact = ({ onSubmit }) => {
       return;
     }
 
-    onSubmit({ name: trimName, number: trimNumber });
-    resetForm();
+    if (isHaveName(trimName, contacts)) {
+      alertDontHaveName(trimName);
+      return;
+    }
+
+    dispatch(addContact({ name: trimName, number: trimNumber }));
   };
 
   const resetForm = () => {
     setName('');
     setNumber('');
+  };
+
+  const handleSubmitFormContact = e => {
+    e.preventDefault();
+    addContactData();
+    resetForm();
   };
 
   return (
@@ -74,10 +104,6 @@ const FormContact = ({ onSubmit }) => {
       </ButtonSubmit>
     </Box>
   );
-};
-
-FormContact.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };
 
 export default FormContact;

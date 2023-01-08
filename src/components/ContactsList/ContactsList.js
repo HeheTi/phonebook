@@ -1,31 +1,34 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import { useEffect, useMemo } from 'react';
 import ListItem from './ListItem/ListItem';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectFilter, selectItemsContacts } from 'redux/selectors';
+import { changeFilter } from 'redux/filter/filterActions';
 
-const ContactsList = ({ contacts = [], delContact }) => {
+const ContactsList = () => {
+  const contacts = useSelector(selectItemsContacts);
+  const filter = useSelector(selectFilter);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (contacts.length === 1) {
+      dispatch(changeFilter(''));
+    }
+  }, [contacts.length, dispatch]);
+
+  const filteredData = useMemo(() => {
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(normalizedFilter)
+    );
+  }, [contacts, filter]);
+
   return (
     <ul>
-      {contacts.map(({ id, name, number }) => (
-        <ListItem
-          key={id}
-          userName={name}
-          userNumber={number}
-          onClickBtn={() => delContact(id)}
-        />
+      {filteredData.map(({ id, name, number }) => (
+        <ListItem key={id} userName={name} userNumber={number} id={id} />
       ))}
     </ul>
   );
-};
-
-ContactsList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-  delContact: PropTypes.func.isRequired,
 };
 
 export default ContactsList;
