@@ -3,11 +3,16 @@ import ListItem from './ListItem/ListItem';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectFilter, selectItemsContacts } from 'redux/selectors';
 import { changeFilter } from 'redux/filter/filterActions';
+import { setContacts } from 'redux/contacts/contactsOperations';
 
 const ContactsList = () => {
   const contacts = useSelector(selectItemsContacts);
   const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setContacts());
+  }, [dispatch]);
 
   useEffect(() => {
     if (contacts.length === 1) {

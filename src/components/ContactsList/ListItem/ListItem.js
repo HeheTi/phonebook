@@ -3,7 +3,8 @@ import { Item, Text, BtnIcon } from './ListItem.styled';
 import { HiTrash } from 'react-icons/hi2';
 import { normalizeName } from 'services/normalized';
 import { useDispatch } from 'react-redux';
-import { removeContact } from 'redux/contacts/contactsSlice';
+import {} from 'redux/contacts/contactsSlice';
+import { deleteContact } from 'redux/contacts/contactsOperations';
 
 const ListItem = ({ userName, userNumber, id }) => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const ListItem = ({ userName, userNumber, id }) => {
       <Text>
         {normalizeName(userName)}: {userNumber}
       </Text>
-      <BtnIcon type="button" onClick={() => dispatch(removeContact(id))}>
+      <BtnIcon type="button" onClick={() => dispatch(deleteContact(id))}>
         <HiTrash size="16px" />
       </BtnIcon>
     </Item>
