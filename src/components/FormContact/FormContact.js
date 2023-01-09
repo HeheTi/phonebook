@@ -6,8 +6,8 @@ import { theme } from 'common/theme';
 import { toast } from 'react-toastify';
 import { normalizeName } from 'services/normalized';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contacts/contactsSlice';
 import { selectItemsContacts } from 'redux/selectors';
+import { postContact } from 'redux/contacts/contactsOperations';
 
 const isHaveName = (nameContact, items) =>
   items.some(item => item.name === nameContact);
@@ -50,7 +50,7 @@ const FormContact = () => {
       return;
     }
 
-    dispatch(addContact({ name: trimName, number: trimNumber }));
+    dispatch(postContact({ name: trimName, number: trimNumber }));
   };
 
   const resetForm = () => {

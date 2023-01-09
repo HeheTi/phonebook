@@ -1,30 +1,65 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { nanoid } from 'nanoid';
 
 const initialState = {
   items: [],
+  isLoading: false,
+  error: null,
 };
 
 export const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
   reducers: {
-    setContacts(state, action) {
-      state.items = action.payload;
+    setContactsPending(state, _) {
+      state.isLoading = true;
     },
-    addContact: {
-      reducer: (state, action) => {
-        state.items.push(action.payload);
-      },
-      prepare: obj => {
-        const id = nanoid();
-        return { payload: { id, ...obj } };
-      },
+    setContactsFulfilled(state, { payload }) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = payload;
     },
-    removeContact(state, action) {
-      state.items = state.items.filter(el => el.id !== action.payload);
+    setContactsRejected(state, { payload }) {
+      state.isLoading = false;
+      state.error = payload;
+    },
+
+    addContactPending(state, _) {
+      state.isLoading = true;
+    },
+    addContactFulfilled(state, { payload }) {
+      state.isLoading = false;
+      state.error = null;
+      state.items.push(payload);
+    },
+    addContactRejected(state, { payload }) {
+      state.isLoading = false;
+      state.error = payload;
+    },
+
+    removeContactPending(state, _) {
+      state.isLoading = true;
+    },
+    removeContactFulfilled(state, { payload }) {
+      state.isLoading = false;
+      state.error = null;
+      const idx = state.items.findIndex(({ id }) => id === payload);
+      state.items.splice(idx, 1);
+    },
+    removeContactRejected(state, { payload }) {
+      state.isLoading = false;
+      state.error = payload;
     },
   },
 });
 
-export const { setContacts, addContact, removeContact } = contactsSlice.actions;
+export const {
+  setContactsPending,
+  setContactsFulfilled,
+  setContactsRejected,
+  addContactPending,
+  addContactFulfilled,
+  addContactRejected,
+  removeContactPending,
+  removeContactFulfilled,
+  removeContactRejected,
+} = contactsSlice.actions;
