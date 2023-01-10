@@ -3,7 +3,7 @@ import ListItem from './ListItem/ListItem';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectFilter, selectItemsContacts } from 'redux/selectors';
 import { changeFilter } from 'redux/filter/filterActions';
-import { setContacts } from 'redux/contacts/contactsOperations';
+import { fetchContacts } from 'redux/contacts/contactsOperations';
 
 const ContactsList = () => {
   const contacts = useSelector(selectItemsContacts);
@@ -11,7 +11,7 @@ const ContactsList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setContacts());
+    dispatch(fetchContacts());
   }, [dispatch]);
 
   useEffect(() => {

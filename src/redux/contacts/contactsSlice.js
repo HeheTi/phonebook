@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { fetchContacts, addContact, deleteContact } from './contactsOperations';
 
 const initialState = {
   items: [],
@@ -6,60 +7,42 @@ const initialState = {
   error: null,
 };
 
+const handlerPending = (state, _) => {
+  state.isLoading = true;
+};
+
+const handlerRejected = (state, { payload }) => {
+  state.isLoading = false;
+  state.error = payload;
+};
+
 export const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
-  reducers: {
-    setContactsPending(state, _) {
-      state.isLoading = true;
-    },
-    setContactsFulfilled(state, { payload }) {
+  extraReducers: {
+    [fetchContacts.pending]: handlerPending,
+    [fetchContacts.fulfilled](state, { payload }) {
       state.isLoading = false;
       state.error = null;
       state.items = payload;
     },
-    setContactsRejected(state, { payload }) {
-      state.isLoading = false;
-      state.error = payload;
-    },
+    [fetchContacts.rejected]: handlerRejected,
 
-    addContactPending(state, _) {
-      state.isLoading = true;
-    },
-    addContactFulfilled(state, { payload }) {
+    [addContact.pending]: handlerPending,
+    [addContact.fulfilled](state, { payload }) {
       state.isLoading = false;
       state.error = null;
       state.items.push(payload);
     },
-    addContactRejected(state, { payload }) {
-      state.isLoading = false;
-      state.error = payload;
-    },
+    [addContact.rejected]: handlerRejected,
 
-    removeContactPending(state, _) {
-      state.isLoading = true;
-    },
-    removeContactFulfilled(state, { payload }) {
+    [deleteContact.pending]: handlerPending,
+    [deleteContact.fulfilled](state, { payload }) {
       state.isLoading = false;
       state.error = null;
-      const idx = state.items.findIndex(({ id }) => id === payload);
+      const idx = state.items.findIndex(({ id }) => id === payload.id);
       state.items.splice(idx, 1);
     },
-    removeContactRejected(state, { payload }) {
-      state.isLoading = false;
-      state.error = payload;
-    },
+    [deleteContact.rejected]: handlerRejected,
   },
 });
-
-export const {
-  setContactsPending,
-  setContactsFulfilled,
-  setContactsRejected,
-  addContactPending,
-  addContactFulfilled,
-  addContactRejected,
-  removeContactPending,
-  removeContactFulfilled,
-  removeContactRejected,
-} = contactsSlice.actions;

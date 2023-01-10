@@ -6,8 +6,8 @@ import { theme } from 'common/theme';
 import { toast } from 'react-toastify';
 import { normalizeName } from 'services/normalized';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectItemsContacts } from 'redux/selectors';
-import { postContact } from 'redux/contacts/contactsOperations';
+import { selectIsLoading, selectItemsContacts } from 'redux/selectors';
+import { addContact } from 'redux/contacts/contactsOperations';
 
 const isHaveName = (nameContact, items) =>
   items.some(item => item.name === nameContact);
@@ -27,6 +27,7 @@ const alertDontHaveName = name =>
 const FormContact = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectItemsContacts);
+  const isLoading = useSelector(selectIsLoading);
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -50,7 +51,7 @@ const FormContact = () => {
       return;
     }
 
-    dispatch(postContact({ name: trimName, number: trimNumber }));
+    dispatch(addContact({ name: trimName, number: trimNumber }));
   };
 
   const resetForm = () => {
@@ -99,7 +100,7 @@ const FormContact = () => {
         required
       />
 
-      <ButtonSubmit type="submit" disabled={!name || !number}>
+      <ButtonSubmit type="submit" disabled={!name || !number || isLoading}>
         Add
       </ButtonSubmit>
     </Box>

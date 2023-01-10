@@ -1,43 +1,24 @@
-import {
-  setContactsPending,
-  setContactsFulfilled,
-  setContactsRejected,
-  addContactPending,
-  addContactFulfilled,
-  addContactRejected,
-  removeContactPending,
-  removeContactFulfilled,
-  removeContactRejected,
-} from './contactsSlice';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { addContact, getContacts, removeContact } from 'services/api';
+import { postContact, getContacts, removeContact } from 'services/api';
 
-export const setContacts = () => async dispatch => {
-  dispatch(setContactsPending);
-  try {
-    const contacts = await getContacts();
-    dispatch(setContactsFulfilled(contacts));
-  } catch (error) {
-    dispatch(setContactsRejected(error));
+export const fetchContacts = createAsyncThunk('contacts/fetchAll', async () => {
+  const { data } = await getContacts();
+  return data;
+});
+
+export const addContact = createAsyncThunk(
+  'contacts/addContact',
+  async contact => {
+    const { data } = await postContact(contact);
+    return data;
   }
-};
+);
 
-export const postContact = contact => async dispatch => {
-  dispatch(addContactPending);
-  try {
-    const contacts = await addContact(contact);
-    dispatch(addContactFulfilled(contacts));
-  } catch (error) {
-    dispatch(addContactRejected(error));
+export const deleteContact = createAsyncThunk(
+  'contacts/deleteContact',
+  async idContact => {
+    const { data } = await removeContact(idContact);
+    return data;
   }
-};
-
-export const deleteContact = idContact => async dispatch => {
-  dispatch(removeContactPending);
-  try {
-    const { id } = await removeContact(idContact);
-    dispatch(removeContactFulfilled(id));
-  } catch (error) {
-    dispatch(removeContactRejected(error));
-  }
-};
+);

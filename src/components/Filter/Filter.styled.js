@@ -1,10 +1,11 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
 export const FilterInput = styled.input`
+  display: block;
+  align-items: center;
   margin-bottom: ${p => p.theme.space[3]}px;
   padding: ${p => p.theme.space[1]}px;
-  display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 250px;
+  width: 300px;
 `;
