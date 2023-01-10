@@ -1,4 +1,4 @@
-import { PropagateLoader, PulseLoader } from 'react-spinners';
+import { PropagateLoader } from 'react-spinners';
 import { WrapperLoader } from './Loader.styled';
 
 const Loader = () => {
