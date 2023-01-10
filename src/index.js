@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from 'components/App';
-import { ThemeProvider } from '@emotion/react';
+import { ThemeProvider } from 'styled-components';
 import './index.css';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';

@@ -1,13 +1,14 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
 export const Title = styled.h1`
   color: ${p => p.theme.colors.text};
   font-size: ${p => p.theme.fontSizes.l};
-  margin-bottom: ${p => p.theme.space[3]}px;
+  margin-bottom: ${p => p.theme.space[4]}px;
+  text-align: center;
 `;
 
 export const TitleSection = styled.h2`
   color: ${p => p.theme.colors.text};
   font-size: ${p => p.theme.fontSizes.ml};
-  margin-bottom: ${p => p.theme.space[3]}px;
+  text-align: center;
 `;

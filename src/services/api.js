@@ -1,31 +1,10 @@
-const BASE_URL = 'https://61c4e654f1af4a0017d9985c.mockapi.io';
-
+import axios from 'axios';
 const ENDPOINT = '/contacts-list';
 
-const fetchContacts = async (endpoint = '/', options = {}) => {
-  const url = BASE_URL + endpoint;
-  const res = await fetch(url, options);
-  return res.ok ? res.json() : Promise.reject(new Error(res.statusText));
-};
+axios.defaults.baseURL = 'https://61c4e654f1af4a0017d9985c.mockapi.io';
 
-export const getContacts = () => fetchContacts(ENDPOINT);
+export const getContacts = () => axios.get(ENDPOINT);
 
-export const addContact = contact => {
-  const options = {
-    method: 'POST',
-    body: JSON.stringify(contact),
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-  };
+export const postContact = contact => axios.post(ENDPOINT, contact);
 
-  return fetchContacts(ENDPOINT, options);
-};
-
-export const removeContact = id => {
-  const options = {
-    method: 'DELETE',
-  };
-
-  return fetchContacts(`${ENDPOINT}/${id}`, options);
-};
+export const removeContact = id => axios.delete(`${ENDPOINT}/${id}`);
