@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { nanoid } from 'nanoid';
+import { nanoid } from '@reduxjs/toolkit';
 import { Box } from './../../common/Box';
 import { Input, LabelInput, ButtonSubmit } from './FormContact.styled';
 import { theme } from 'common/theme';
