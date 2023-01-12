@@ -7,6 +7,8 @@ export const theme = {
     btn: '#bb86fc',
     fill: '#5856d6',
     secondary: '#05a',
+    active: '#b11bf6',
+    hover: '#a870f7',
   },
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
   borders: {
@@ -17,6 +19,7 @@ export const theme = {
     xs: '12px',
     s: '14px',
     m: '16px',
+    ms: '20px',
     ml: '26px',
     l: '32px',
     xl: '64px',
@@ -29,6 +32,7 @@ export const theme = {
     body: 400,
     heading: 700,
     bold: 700,
+    medium: 600,
   },
   radii: {
     none: '0',
