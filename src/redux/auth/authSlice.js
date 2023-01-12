@@ -78,6 +78,7 @@ export const authSlice = createSlice({
       })
       .addCase(getCurrentUser.rejected, (state, { payload }) => {
         state.loadingUser = false;
+        state.token = null;
         state.error = payload;
       });
   },

@@ -1,19 +1,21 @@
 import UserMenu from 'components/UserMenu';
-import { FirstNavL, NavigateLink, NavLinkStyled } from './Navigation.styled';
+import AuthNav from './AuthNav';
+import { FirstNavL, NavLinkStyled } from './Navigation.styled';
+import { useSelector } from 'react-redux';
+import { selectAuthIsLoggedIn } from 'redux/selectors';
+import { Box } from 'common/Box';
 
 const Navigation = () => {
+  const isLoggedIn = useSelector(selectAuthIsLoggedIn);
+
   return (
-    <NavigateLink>
-      <div>
+    <Box display="flex" alignItems="center" justifyContent="space-between">
+      <nav>
         <FirstNavL to="/">Home</FirstNavL>
-        <NavLinkStyled to="/contacts">Contacts</NavLinkStyled>
-      </div>
-      <div>
-        <FirstNavL to="/login">Login</FirstNavL>
-        <NavLinkStyled to="/register">Register</NavLinkStyled>
-      </div>
-      <UserMenu />
-    </NavigateLink>
+        {isLoggedIn && <NavLinkStyled to="/contacts">Contacts</NavLinkStyled>}
+      </nav>
+      {isLoggedIn ? <UserMenu /> : <AuthNav />}
+    </Box>
   );
 };
 

@@ -1,7 +1,9 @@
 import { lazy } from 'react';
 import { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { RequireAuthRoute } from './RequireAuthRoute';
 import Loader from 'components/Loader';
+import { RequireNotAuthRoute } from './RequireNotAuthRoute';
 
 const HomePage = lazy(() => import('pages/HomePage'));
 const SharedLayout = lazy(() => import('components/SharedLayout'));
@@ -16,9 +18,33 @@ const AllRouts = () => {
         <Routes>
           <Route path="/" element={<SharedLayout />}>
             <Route index element={<HomePage />} />
-            <Route path="contacts" element={<ContactsPage />} />
-            <Route path="register" element={<RegisterPage />} />
-            <Route path="login" element={<LoginPage />} />
+            <Route
+              path="contacts"
+              element={
+                <RequireAuthRoute
+                  component={<ContactsPage />}
+                  redirectTo="/login"
+                />
+              }
+            />
+            <Route
+              path="register"
+              element={
+                <RequireNotAuthRoute
+                  component={<RegisterPage />}
+                  redirectTo="/contacts"
+                />
+              }
+            />
+            <Route
+              path="login"
+              element={
+                <RequireNotAuthRoute
+                  component={<LoginPage />}
+                  redirectTo="/contacts"
+                />
+              }
+            />
           </Route>
         </Routes>
       </Suspense>
