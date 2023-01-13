@@ -1,10 +1,12 @@
 export const theme = {
   colors: {
     text: '#2a2a2a',
-    label: '#230636',
+    label: '#2c0646',
     background: 'red',
     border: 'violet',
     btn: '#bb86fc',
+    bgHoverColor: '#e8d9fb',
+    btnLogout: '#dac0fa',
     fill: '#5856d6',
     secondary: '#05a',
     active: '#b11bf6',

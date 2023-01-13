@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   FormControl,
   IconButton,
   InputAdornment,
@@ -55,7 +56,7 @@ const RegisterPage = () => {
         }}
       >
         <TextField
-          sx={{ width: 400 }}
+          sx={{ width: '100%' }}
           required
           color="secondary"
           id="outlined-required-name"
@@ -66,7 +67,7 @@ const RegisterPage = () => {
         />
 
         <TextField
-          sx={{ width: 400 }}
+          sx={{ width: '100%' }}
           required
           color="secondary"
           id="outlined-required-email"
@@ -77,7 +78,7 @@ const RegisterPage = () => {
         />
 
         <FormControl
-          sx={{ width: 400 }}
+          sx={{ width: '100%' }}
           variant="outlined"
           color="secondary"
           required
@@ -106,7 +107,14 @@ const RegisterPage = () => {
           />
         </FormControl>
 
-        <button type="submit">Register</button>
+        <Button
+          color="secondary"
+          variant="contained"
+          type="submit"
+          sx={{ width: '100%' }}
+        >
+          Register
+        </Button>
       </Box>
     </>
   );

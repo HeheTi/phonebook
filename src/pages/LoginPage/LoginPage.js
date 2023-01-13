@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   FormControl,
   IconButton,
   InputAdornment,
@@ -53,7 +54,7 @@ const LoginPage = () => {
         }}
       >
         <TextField
-          sx={{ width: 400 }}
+          sx={{ width: '100%' }}
           required
           color="secondary"
           id="outlined-required"
@@ -64,7 +65,7 @@ const LoginPage = () => {
         />
 
         <FormControl
-          sx={{ width: 400 }}
+          sx={{ width: '100%' }}
           variant="outlined"
           color="secondary"
           required
@@ -93,7 +94,14 @@ const LoginPage = () => {
           />
         </FormControl>
 
-        <button type="submit">Login</button>
+        <Button
+          color="secondary"
+          variant="contained"
+          type="submit"
+          sx={{ width: '100%' }}
+        >
+          Login
+        </Button>
       </Box>
     </>
   );

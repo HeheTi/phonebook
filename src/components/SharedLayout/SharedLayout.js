@@ -9,7 +9,15 @@ const SharedLayout = () => {
         <Navigation />
       </Box>
 
-      <Box ml="auto" mr="auto" width="400px" p="15px">
+      <Box
+        ml="auto"
+        mr="auto"
+        width="500px"
+        pt="30px"
+        pb="30px"
+        pl="15px"
+        pr="15px"
+      >
         <Outlet />
       </Box>
     </>
