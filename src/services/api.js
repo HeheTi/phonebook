@@ -1,10 +1,17 @@
 import axios from 'axios';
-const ENDPOINT = '/contacts-list';
 
-axios.defaults.baseURL = 'https://61c4e654f1af4a0017d9985c.mockapi.io';
+const CONTACTS_ENDPOINT = {
+  GET: '/contacts',
+  ADD: '/contacts',
+  DEL: '/contacts/',
+  CHANGE: '/contacts/',
+};
+export const getContacts = () => axios.get(CONTACTS_ENDPOINT.GET);
 
-export const getContacts = () => axios.get(ENDPOINT);
+export const postContact = contact =>
+  axios.post(CONTACTS_ENDPOINT.ADD, contact);
 
-export const postContact = contact => axios.post(ENDPOINT, contact);
+export const removeContact = id => axios.delete(CONTACTS_ENDPOINT.DEL + id);
 
-export const removeContact = id => axios.delete(`${ENDPOINT}/${id}`);
+export const changeContact = (id, contact) =>
+  axios.CHANGE(CONTACTS_ENDPOINT.DEL + id, contact);

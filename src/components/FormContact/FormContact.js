@@ -1,13 +1,11 @@
-import { useState, useRef } from 'react';
-import { nanoid } from '@reduxjs/toolkit';
-import { Box } from './../../common/Box';
-import { Input, LabelInput, ButtonSubmit } from './FormContact.styled';
-import { theme } from 'common/theme';
+import { useState } from 'react';
+import { ButtonSubmit, Form } from './FormContact.styled';
 import { toast } from 'react-toastify';
 import { normalizeName } from 'services/normalized';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsLoading, selectItemsContacts } from 'redux/selectors';
 import { addContact } from 'redux/contacts/contactsOperations';
+import { TextField } from '@mui/material';
 
 const isHaveName = (nameContact, items) =>
   items.some(item => item.name === nameContact);
@@ -31,9 +29,6 @@ const FormContact = () => {
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-
-  const { current: nameInputId } = useRef(nanoid());
-  const { current: numberInputId } = useRef(nanoid());
 
   const handleChangeName = e => setName(e.target.value);
   const handleChangeNumber = e => setNumber(e.target.value);
@@ -66,44 +61,43 @@ const FormContact = () => {
   };
 
   return (
-    <Box
-      as="form"
-      p="10px"
-      border={theme.borders.normal}
-      borderColor={theme.colors.border}
-      mb={theme.space[3]}
-      onSubmit={handleSubmitFormContact}
-    >
-      <LabelInput htmlFor={nameInputId}>Name</LabelInput>
-      <Input
-        id={nameInputId}
-        type="text"
+    <Form onSubmit={handleSubmitFormContact}>
+      <TextField
+        sx={{ width: '100%' }}
+        required
+        color="secondary"
+        id="outlined-required-name-contact"
+        label="Name"
         name="name"
         value={name}
-        placeholder="Rosie Simpson"
         onChange={handleChangeName}
-        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+        pattern="^[a-zA-Za-яА-Я]+(([' -][a-zA-Za-яА-Я ])?[a-zA-Za-яА-Я]*)*$"
         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-        required
       />
 
-      <LabelInput htmlFor={numberInputId}>Number</LabelInput>
-      <Input
-        id={numberInputId}
+      <TextField
+        sx={{ width: '100%' }}
+        required
+        color="secondary"
         type="tel"
+        id="outlined-required-name-contact"
+        label="Number"
         name="number"
         value={number}
-        placeholder="459-12-56"
         onChange={handleChangeNumber}
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-        required
       />
 
-      <ButtonSubmit type="submit" disabled={!name || !number || isLoading}>
-        Add
+      <ButtonSubmit
+        color="secondary"
+        variant="contained"
+        type="submit"
+        disabled={!name || !number || isLoading}
+      >
+        Add contact on your list
       </ButtonSubmit>
-    </Box>
+    </Form>
   );
 };
 
